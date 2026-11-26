@@ -272,7 +272,26 @@ mac("AblBlindBetterFifty", _better[("clean", 50)])
 mac("AblRideMax", f"{max(d for d, _ in _ride):.2f}")
 mac("AblRealRuns", thousands(_runs))
 
-real = parse_md(RES / "real_tables.md")
+def full_precision(tabs, summary, key_of):
+    """Overwrite the rounded delta columns of parsed pooled tables with the summary's values,
+    so that later formatting rounds only once."""
+    res = json.load(open(summary))["results"]
+    for key, (hdr, rows) in tabs.items():
+        where = key_of(key, res)
+        if where is None:
+            continue
+        pooled_ = res[where[0]]["pooled"][where[1]]
+        for r in rows:
+            for ref in ("wald_cut", "never"):
+                i, v = hdr.index(f"dJ vs {ref}"), pooled_[r[0]][f"d_{ref}"]["mean_delta"]
+                assert abs(float(r[i]) - v) <= 0.005 + 1e-9, (summary.name, key, r[0], ref)
+                r[i] = repr(v)
+    return tabs
+
+def _headline(key, res):  # real_tables.md: (condition, group)
+    return key if key[0] in res and key[1] in res[key[0]]["pooled"] else None
+
+real = full_precision(parse_md(RES / "real_tables.md"), RES / "real_summary.json", _headline)
 CONDS = [("clean", "Clean"), ("dropout_adverse", "Adverse dropout"), ("delay_adverse", "Adverse delay")]
 def pooled(cond, grp="all14"): return real[(cond, grp)]
 mac("RealRunsPerArm", thousands(4600))  # 230 episodes x 20 policy seeds (asserted with NStreamEpisodes below)
@@ -292,7 +311,8 @@ mac("RealVsNeverMin", f"{min(vn):.0f}"); mac("RealVsNeverMax", f"{max(vn):.0f}")
 wg = float(rowdict(pooled("clean"), "never")["J"]) - float(rowdict(pooled("clean"), "wald_cut")["J"])
 mac("RealWaldGain", f"{wg:.0f}"); mac("RealPiShareFourteen", f"{100 * vn[0] / wg:.0f}")  # share of Wald's gain kept by full sampling at h=14, clean feedback
 # sensitivity: the 12 streams with recorded provenance (results/riskbudget/sensitivity_12streams/)
-real12 = parse_md(RES / "sensitivity_12streams" / "real_tables.md")
+real12 = full_precision(parse_md(RES / "sensitivity_12streams" / "real_tables.md"),
+                        RES / "sensitivity_12streams" / "real_summary.json", _headline)
 t12 = real12[("clean", "all12")]
 vn12 = abs(float(rowdict(t12, "f3_pi1_h14")["dJ vs never"]))
 wg12 = float(rowdict(t12, "never")["J"]) - float(rowdict(t12, "wald_cut")["J"])
@@ -412,6 +432,8 @@ mac("PFourTightEmpB", f"{tight2['forced_frac']:.3f}"); mac("PFourTightBoundB", f
 
 # ---------------------------------------------------------------- v3 (appendix)
 sc = parse_md(RES / "v3_scarce_tables.md"); og = parse_md(RES / "v3_orig30_tables.md"); rv = parse_md(RES / "real_v3_tables.md")
+full_precision(rv, RES / "real_v3_summary.json",
+               lambda key, res: ("clean", "all14") if key[1] == "clean / all14: pooled (equal weight over streams)" else None)
 def v3rows(tab, arms, cols):
     hdr, rows = tab
     out = ""
