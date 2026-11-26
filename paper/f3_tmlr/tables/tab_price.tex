@@ -1,0 +1,12 @@
+\begin{tabular}{@{}l r r r r r r r r r @{}}
+\toprule
+ & \multicolumn{3}{c}{Simulation, $R=20$} & \multicolumn{3}{c}{Real streams, $R=24$} & \multicolumn{3}{c}{Real streams, $R=60$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+Controller & gain & \% over & max & gain & \% over & max & gain & \% over & max \\
+\midrule
+Stop-loss & 2.74 & 4.2 & 59 & 178.1 & 6.8 & 84 & 179.9 & 1.7 & 196 \\
+Stop-loss, calibrated & $-$1.94 & 0 & 0 & $-$5.7 & 0 & 0 & -- & -- & -- \\
+Shield, full sampling & 2.10 & 0 & 20 & 75.1 & 0 & 24 & 102.1 & 0 & 60 \\
+Shield, paced & 1.73 & 0.003 & 22 & 78.8 & 0 & 24 & 147.4 & 0 & 54 \\
+\bottomrule
+\end{tabular}
