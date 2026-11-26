@@ -126,7 +126,7 @@ macros.update({
     "ScreenLose": len(lose), "ScreenLoseWaldAlso": sum(1 for r in lose if r["wald_gain_vs_never"] < 0),
     "ScreenLoseShieldMed": f"{-np.median([r['shield_gain_vs_never'] for r in lose]):.1f}",
     "ScreenLoseWaldMed": f"{-np.median([r['wald_gain_vs_never'] for r in lose]):.1f}",
-    "ScreenForexAdv": f"{np.median([r['challenger_better_mean'] for r in rows if r['group'] == 'forex']):.3f}",
+    "ScreenForexAdv": f"{np.median([r['challenger_better_mean'] for r in lose if r['group'] == 'forex']):.3f}",
 })
 
 (HERE / "tables/screen_numbers.tex").write_text(

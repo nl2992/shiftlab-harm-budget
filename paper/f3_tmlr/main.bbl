@@ -1,4 +1,4 @@
-\begin{thebibliography}{44}
+\begin{thebibliography}{50}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -19,6 +19,12 @@ Ashwinkumar Badanidiyuru, Robert Kleinberg, and Aleksandrs Slivkins.
 \newblock Bandits with knapsacks.
 \newblock \emph{Journal of the ACM}, 65\penalty0 (3):\penalty0 1--55, 2018.
 \newblock \doi{10.1145/3164539}.
+
+\bibitem[Balachandran(2026)]{balachandran2026disagreement}
+Vishnu~Bindu Balachandran.
+\newblock Pay only for disagreement: Certified no-regression verdicts for model
+  updates with matching label-complexity bounds.
+\newblock \emph{arXiv preprint arXiv:2609.17560}, 2026.
 
 \bibitem[Candanedo(2016)]{uci_occupancy}
 Luis Candanedo.
@@ -72,6 +78,11 @@ Vassilis Digalakis, Jr., Christophe P{\'e}rignon, S{\'e}bastien Saurin, and
 \newblock The challenger: When do new data sources justify switching machine
   learning models?
 \newblock arXiv:2512.18390, 2025.
+
+\bibitem[Du et~al.(2020)Du, Wang, and Huang]{du2020conservative}
+Yihan Du, Siwei Wang, and Longbo Huang.
+\newblock A one-size-fits-all solution to conservative bandit problems.
+\newblock \emph{arXiv preprint arXiv:2012.07341}, 2020.
 
 \bibitem[Elwell \& Polikar(2011)Elwell and Polikar]{elwell2011incremental}
 Ryan Elwell and Robi Polikar.
@@ -197,11 +208,23 @@ Romain Laroche, Paul Trichelair, and R{\'e}mi Tachet~des Combes.
 \newblock In \emph{Proceedings of the 36th International Conference on Machine
   Learning}, volume~97 of \emph{PMLR}, pp.\  3652--3661, 2019.
 
+\bibitem[Li et~al.(2023)Li, Mao, and Bojinov]{li2023phased}
+Yufan Li, Jialiang Mao, and Iavor Bojinov.
+\newblock Balancing risk and reward: An automated phased release strategy.
+\newblock \emph{arXiv preprint arXiv:2305.09626}, 2023.
+
 \bibitem[Lindon \& Kallus(2026)Lindon and Kallus]{lindon2026design}
 Michael Lindon and Nathan Kallus.
 \newblock Design-based anytime-valid inference for randomized experiments with
   delayed outcomes and staggered entry.
 \newblock arXiv:2603.25971, 2026.
+
+\bibitem[Lindon et~al.(2022)Lindon, Sanden, and Shirikian]{lindon2022canary}
+Michael Lindon, Chris Sanden, and Vach{\'e} Shirikian.
+\newblock Rapid regression detection in software deployments through sequential
+  testing.
+\newblock In \emph{Proceedings of the 28th ACM SIGKDD Conference on Knowledge
+  Discovery and Data Mining}, 2022.
 
 \bibitem[Liu et~al.(2022)Liu, Xia, Stevens, and Chen]{liu2024cams}
 Xuefeng Liu, Fangfang Xia, Rick~L. Stevens, and Yuxin Chen.
@@ -245,6 +268,12 @@ Ali Sadeghian, Alireza Shafaei, Hamid Hadibeik, and Babak~Hossein Khalaj.
 \newblock Retrain, alert, or rollback? {A} three-response decision framework
   for production {ML} under concept drift.
 \newblock arXiv:2611.02251, 2026.
+
+\bibitem[Sani et~al.(2014)Sani, Neu, and Lazaric]{sani2014easy}
+Amir Sani, Gergely Neu, and Alessandro Lazaric.
+\newblock Exploiting easy data in online optimization.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~27, 2014.
 
 \bibitem[Sawarni et~al.(2025)Sawarni, Jin, Whitehouse, and
   Syrgkanis]{sawarni2025abstention}
@@ -293,6 +322,12 @@ Yifan Wu, Roshan Shariff, Tor Lattimore, and Csaba Szepesv{\'a}ri.
 \newblock Conservative bandits.
 \newblock In \emph{Proceedings of the 33rd International Conference on Machine
   Learning}, volume~48 of \emph{PMLR}, pp.\  1254--1262, 2016.
+
+\bibitem[Zhao et~al.(2019)Zhao, Liu, and Deb]{zhao2019staged}
+Zhenyu Zhao, Mandie Liu, and Anirban Deb.
+\newblock Safely and quickly deploying new features with a staged rollout
+  framework using sequential test and adaptive experimental design.
+\newblock \emph{arXiv preprint arXiv:1905.10493}, 2019.
 
 \bibitem[Zhou et~al.(2026)Zhou, Li, and Zhu]{zhou2026metapolicy}
 Wenbin Zhou, Michael~Lingzhi Li, and Shixiang Zhu.

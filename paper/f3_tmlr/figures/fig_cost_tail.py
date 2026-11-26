@@ -14,7 +14,7 @@ apply_style(8.5)
 fig, ax = plt.subplots(figsize=(WIDTH * 0.72, 2.9))
 ax.axvspan(-3, R, color=P["green_1"], alpha=0.6, lw=0)
 ax.axvline(R, color=P["dark"], lw=1.0)
-ax.text(R - 0.7, 71.95, "$q_{99}\\leq R$: budget met", ha="right", va="top", fontsize=7.5, color="#3E5A2A")
+ax.text(R - 0.7, 71.95, "$q_{99}\\leq R$", ha="right", va="top", fontsize=7.5, color="#3E5A2A")
 for a in OTHER:
     ax.scatter(desc[a]["sup_q99"], desc[a]["J"], s=26, marker="o", facecolor="none", edgecolor=P["red_2"], linewidths=1.1, zorder=2)
 ax.text(33.0, 71.62, "other comparators\n(no budget)", fontsize=7.5, color=P["red_strong"], ha="center", va="top", alpha=0.9)
