@@ -227,6 +227,51 @@ body += "\\bottomrule\n\\end{tabular}\n"
 write("app_ablation.tex", body)
 
 # ---------------------------------------------------------------- real streams
+# post hoc ablations (run_real_ablations.py), read next to the unchanged arms of the same tapes
+_OUTR = HERE.parent.parent / "outputs/paper3/riskbudget"
+_HS = (6, 14, 24, 50, 100)
+_abl, _viol, _runs, _ride, _better = {}, 0, 0, [], {}
+body = ("\\begin{tabular}{@{}l r rrr rr@{}}\n\\toprule\n & & \\multicolumn{3}{c}{full sampling} & \\multicolumn{2}{c}{paced} \\\\\n"
+        "Condition & $h$ & shield & label-blind & no ride-out & shield & no ride-out \\\\\n\\midrule\n")
+for c, lab in [("clean", "Clean"), ("dropout_adverse", "Adverse dropout"), ("delay_adverse", "Adverse delay")]:
+    ab = json.load(open(_OUTR / f"real_ablations/{c}.json"))
+    base = {s: json.load(open(_OUTR / f"real/{c}/{s}.json")) for s in ab}
+    assert len(ab) == 14
+    def J(s, arm): 
+        rows = base[s]["fields"]["J"][base[s]["arms"].index(arm)]
+        return sum(map(sum, rows)) / sum(map(len, rows))
+    for h in _HS:
+        cells = []
+        for fam, tags in (("f3_pi1", ("labelblind", "noride")), ("f3v2d", ("noride",))):
+            full = sum(J(s, "never") - J(s, f"{fam}_h{h}") for s in ab) / 14
+            cells.append(full)
+            for tag in tags:
+                k = f"{fam}_h{h}_{tag}"
+                g = sum(J(s, "never") - ab[s][k]["J"] for s in ab) / 14
+                cells.append(g)
+                _abl[(c, fam, h, tag)] = (full, g)
+                _viol += sum(ab[s][k]["n_viol"] for s in ab)
+                _runs += sum(ab[s][k]["n_runs"] for s in ab)
+                if tag == "noride":
+                    _ride.append((full - g, sum(ab[s][k]["J"] < J(s, f"{fam}_h{h}") - 1e-9 for s in ab)))
+                else:
+                    _better[(c, h)] = sum(ab[s][k]["J"] < J(s, f"{fam}_h{h}") - 1e-9 for s in ab)
+        body += f"{lab if h == _HS[0] else ''} & {h} & " + " & ".join(num(x, 1) for x in cells) + " \\\\\n"
+    body += "\\midrule\n" if c != "delay_adverse" else ""
+write("app_real_ablations.tex", body + "\\bottomrule\n\\end{tabular}\n")
+# the sentences in main.tex rest on these
+assert _viol == 0 and all(d >= 0 and n == 0 for d, n in _ride)
+assert all(_abl[(c, "f3_pi1", h, "labelblind")][1] < 0.2 * _abl[(c, "f3_pi1", h, "labelblind")][0]
+           for c in ("clean", "dropout_adverse", "delay_adverse") for h in _HS)
+for h, w in ((14, "Fourteen"), (50, "Fifty")):
+    full, blind = _abl[("clean", "f3_pi1", h, "labelblind")]
+    mac(f"AblFullH{w}", num(full, 1)); mac(f"AblBlindH{w}", num(blind, 1))
+mac("AblBlindBetterSix", _better[("clean", 6)])
+mac("AblBlindBetterFourteen", _better[("clean", 14)])
+mac("AblBlindBetterFifty", _better[("clean", 50)])
+mac("AblRideMax", f"{max(d for d, _ in _ride):.2f}")
+mac("AblRealRuns", thousands(_runs))
+
 real = parse_md(RES / "real_tables.md")
 CONDS = [("clean", "Clean"), ("dropout_adverse", "Adverse dropout"), ("delay_adverse", "Adverse delay")]
 def pooled(cond, grp="all14"): return real[(cond, grp)]
