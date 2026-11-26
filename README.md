@@ -24,7 +24,7 @@ pip install -e ".[dev]"
 pytest -q
 ```
 
-Large raw data and run outputs are not tracked. Scripts regenerate them, and each protocol or results note under `docs/` states the seeds and commands it used.
+Large raw data and most run outputs are not tracked. The exceptions are `outputs/paper3/riskbudget/{real,screen100}` (about 35 MB), which the paper's figures and screen tables read. Rebuild the paper with `paper/f3_tmlr/build.sh`. Provenance records for the cached real streams are described in `data/atlas_v2_losses/README.md`.
 
 ## Related repositories
 

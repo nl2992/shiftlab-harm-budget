@@ -7,7 +7,14 @@ __pycache__/
 .DS_Store
 build/
 dist/
-outputs/
+outputs/*
+# run outputs the paper's figures and screen tables read
+!outputs/paper3/
+outputs/paper3/*
+!outputs/paper3/riskbudget/
+outputs/paper3/riskbudget/*
+!outputs/paper3/riskbudget/real/
+!outputs/paper3/riskbudget/screen100/
 *.aux
 *.log
 *.out

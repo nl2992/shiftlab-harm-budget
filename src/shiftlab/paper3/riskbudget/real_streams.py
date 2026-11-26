@@ -44,7 +44,8 @@ _ALL14: dict[str, tuple[Path, int]] = {
     "household_power": (SPRINT_DIR, 144),
     "metro": (SPRINT_DIR, 24),
 }
-# Dropped 2026-11-22: neither stream's source, task nor models is recorded anywhere in the repository.
+# Dropped 2026-11-22 as unrecorded; records later found (see data/atlas_v2_losses/README.md). Both were
+# kept by an outcome-based screen, so the 12-stream view remains the sensitivity analysis.
 # Restored 2026-11-25: the pre-registered study (05F) covers all 14 streams; the 12-stream view is a
 # sensitivity analysis (results/riskbudget/sensitivity_12streams/). Set NO_PROVENANCE to reproduce it.
 NO_PROVENANCE = ("openml_ldpa", "uci_occupancy")

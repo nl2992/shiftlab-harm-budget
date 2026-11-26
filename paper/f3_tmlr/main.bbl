@@ -1,4 +1,4 @@
-\begin{thebibliography}{41}
+\begin{thebibliography}{44}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -20,10 +20,24 @@ Ashwinkumar Badanidiyuru, Robert Kleinberg, and Aleksandrs Slivkins.
 \newblock \emph{Journal of the ACM}, 65\penalty0 (3):\penalty0 1--55, 2018.
 \newblock \doi{10.1145/3164539}.
 
+\bibitem[Candanedo(2016)]{uci_occupancy}
+Luis Candanedo.
+\newblock Occupancy detection.
+\newblock UCI Machine Learning Repository, 2016.
+
 \bibitem[Candanedo(2017)]{uci_appliances}
 Luis Candanedo.
 \newblock Appliances energy prediction.
 \newblock UCI Machine Learning Repository, 2017.
+
+\bibitem[Candanedo \& Feldheim(2016)Candanedo and
+  Feldheim]{candanedo2016occupancy}
+Luis~M. Candanedo and V{\'e}ronique Feldheim.
+\newblock Accurate occupancy detection of an office room from light,
+  temperature, humidity and {CO2} measurements using statistical learning
+  models.
+\newblock \emph{Energy and Buildings}, 112:\penalty0 28--39, 2016.
+\newblock \doi{10.1016/j.enbuild.2015.11.071}.
 
 \bibitem[Cesa-Bianchi et~al.(2013)Cesa-Bianchi, Dekel, and
   Shamir]{cesabianchi2013switching}
@@ -257,6 +271,13 @@ Philip~S. Thomas, Georgios Theocharous, and Mohammad Ghavamzadeh.
 Joaquin Vanschoren, Jan~N. van Rijn, Bernd Bischl, and Luis Torgo.
 \newblock {OpenML}: Networked science in machine learning.
 \newblock \emph{SIGKDD Explorations}, 15\penalty0 (2):\penalty0 49--60, 2014.
+
+\bibitem[Vidulin et~al.(2010)Vidulin, Lu{\v{s}}trek, Kalu{\v{z}}a, Piltaver,
+  and Krivec]{uci_ldpa}
+Vedrana Vidulin, Mitja Lu{\v{s}}trek, Bo{\v{s}}tjan Kalu{\v{z}}a, Rok Piltaver,
+  and Jana Krivec.
+\newblock Localization data for person activity.
+\newblock UCI Machine Learning Repository, 2010.
 
 \bibitem[Waudby-Smith \& Ramdas(2024)Waudby-Smith and
   Ramdas]{waudbysmith2024betting}
