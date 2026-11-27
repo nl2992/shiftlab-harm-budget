@@ -293,7 +293,7 @@ Worst-regime rates overstate typical behaviour, so pooled rates matter too. Exce
 
 \input{figures/fig_violations.tex}
 
-The stop-loss and the CUSUM rollback try to keep a budget. They still exceed it in regimes where their checks rely on resolved harm and omit exposure whose labels are in transit. In the ablations, each part of the accounting matters: without the pending reserve the worst-regime violation rate at $R=12$ is \AblNoPending, without the rollback reserve \AblNoRollback, and without the confidence width \AblNoConf{} (Table~\ref{tab:ablation}). Removing the pending reserve also removes the current-round charge. The no-width arm uses the rate menu $\{0.25,1\}$ and takes the lower rate only with two units of slack. A matched control, run after the study and outside its registration on the same regimes and seeds, keeps the width and changes nothing else. It exceeded $R=12$ in no run, against \CtrlNoConfViol{} runs for the no-width arm, and its largest harm was \CtrlMax. With the width the shield takes the lower rate on \CtrlLow\% of its queried rounds instead of \CtrlNoConfLow\%, so it buys more labels (\CtrlLabels{} against \CtrlNoConfLabels{} per run), and it still has the lower mean cost (\CtrlJ{} against \CtrlNoConfJ).
+The stop-loss and the CUSUM rollback both try to limit harm, the first against $R$ and the second through a fixed threshold. They still exceed $R$ in regimes where their checks rely on resolved harm and omit exposure whose labels are in transit. In the ablations, each part of the accounting matters: without the pending reserve the worst-regime violation rate at $R=12$ is \AblNoPending, without the rollback reserve \AblNoRollback, and without the confidence width \AblNoConf{} (Table~\ref{tab:ablation}). Removing the pending reserve also removes the current-round charge. The no-width arm uses the rate menu $\{0.25,1\}$ and takes the lower rate only with two units of slack. A matched control, run after the study and outside its registration on the same regimes and seeds, keeps the width and changes nothing else. It exceeded $R=12$ in no run, against \CtrlNoConfViol{} runs for the no-width arm, and its largest harm was \CtrlMax. With the width the shield takes the lower rate on \CtrlLow\% of its queried rounds instead of \CtrlNoConfLow\%, so it buys more labels (\CtrlLabels{} against \CtrlNoConfLabels{} per run), and it still has the lower mean cost (\CtrlJ{} against \CtrlNoConfJ).
 
 Pooled over the regimes, the shield keeps the budget and costs less than never switching. At $R=20$ its pooled cost is \JFthreeTwenty{} against \JNever{} for never switching, a difference of \SimVsNeverDelta{} (95\% interval [\SimVsNeverLo, \SimVsNeverHi], \SimVsNeverPct\%). In the six stress regimes, where delayed and missing feedback mislead the heuristics, the shield also costs less than tuned Wald with cutoff, by \StressDelta{} ([\StressLo, \StressHi], \StressPct\%). It still costs more than never switching in those regimes taken together, since the budget permits some harm before the shield withdraws. Figure~\ref{fig:cost_tail} places the main arms by mean cost and 99th-percentile harm. The stop-loss has the lower mean cost, and it pays for that with runs above $R$; the difference is what the guarantee costs in this simulation (Table~\ref{tab:price}).
 
@@ -594,7 +594,7 @@ Per-regime exceedance rates are plotted in Figure~\ref{fig:violations_full}(a), 
 \begin{table}[!htbp]\caption{Real streams under adverse delay, pooled over 14 streams. Costs are equal-stream means; exceedance counts aggregate runs at comparator thresholds $R=24$ and $R=60$, and violations use each budget arm's own budget.}\centering\scriptsize\resizebox{\linewidth}{!}{\input{tables/app_real_delay.tex}}\end{table}
 \begin{table}[!htbp]\caption{Mean cost $J$ per stream on clean feedback, at $h=50$ ($R=60$); each row averages the available episodes for that stream.}\label{tab:perstream}\centering\scriptsize\input{tables/app_stream.tex}\end{table}
 
-\subsection*{Claims, supporting results and scope}\label{app:claims}
+\label{app:claims}
 \begin{table}[!htbp]
 \caption{Contributions, supporting results and scope.}\label{tab:claims}
 \centering\small
@@ -633,7 +633,6 @@ Label-scarce (v3) & paced variant with a lower floor $\pi_{\min}$, a wider mixtu
 \centering\small
 \resizebox{\linewidth}{!}{\input{tables/tab_confirm.tex}}
 \end{table}
-\subsection*{Ablations and harmful streams}
 \begin{table}[!htbp]
 \caption{Ablations at $R=12$ (registered C6): worst-regime violation rate with the Wilson 95\% interval.}\label{tab:ablation}
 \centering\small
