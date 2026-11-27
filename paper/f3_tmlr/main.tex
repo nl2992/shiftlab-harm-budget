@@ -156,7 +156,10 @@ and computes
 W_t(\pi)&=k\,(N_{t-1}+\one\{a_{t-1}=0\})+\underbrace{k}_{\text{rollback}}+n_{\rm b}+A+P\\
  &\quad+\underbrace{g_t\kappa(\pi)}_{\text{this round}}+D_\delta\big(V+v_t(\pi)\big),
 \end{align*}}
-with $A,P,V,n_{\rm b}$ evaluated at the start of round $t$. It deploys $a_t=1$ iff $W_t(\pi_t)\le R$ for the cheapest $\pi_t$ in a menu such as $\{\pi_{\rm lo},1\}$, falling back to $\pi=1$ and then to $a_t=0$, which is a rollback if $a_{t-1}=1$. Outside ride-out (below), when the inner rule proposes $a_t=0$ the shield always agrees, since the fee of that rollback has already been reserved. This $\kappa$ describes full and blind accounting; the paced variants instead book a sampled round at one unit until it settles and add a look-ahead width (Appendix~\ref{app:v2}).
+with $A,P,V,n_{\rm b}$ evaluated at the start of round $t$. It deploys $a_t=1$ iff $W_t(\pi_t)\le R$ for the cheapest $\pi_t$ in a menu such as $\{\pi_{\rm lo},1\}$, falling back to $\pi=1$ and then to $a_t=0$, which is a rollback if $a_{t-1}=1$. Outside ride-out (below), when the inner rule proposes $a_t=0$ the shield always agrees, since the fee of that rollback has already been reserved.
+
+\paragraph{Which check each arm runs.}
+The full-sampling arms run the check above with $\pi=1$, where the width is zero. The paced variant and v3 do not run it with $\pi<1$. They run the settlement check of Appendix~\ref{app:v2}, which books a sampled round at one unit until it settles, uses the exact-coin mixture of Lemma~\ref{lem:coin} in place of Lemma~\ref{lem:bennett}'s width, and adds a look-ahead before sampling. The blind-round variant runs the same code with $\pi\in\{1,\text{blind}\}$, where no width is needed. Among the experiments, the check above with $\pi<1$ appears only in the no-width ablation and its matched control (rate menu $\{0.25,1\}$).
 
 \paragraph{Why each term is there.}
 \emph{Fees.} The first term is the fees paid so far including this promotion.
