@@ -135,6 +135,18 @@ mac("CtrlLow", f"{100 * _on['low_rate_share']:.1f}"); mac("CtrlNoConfLow", f"{10
 mac("CtrlLabels", f"{_on['labels']:.1f}"); mac("CtrlNoConfLabels", f"{_off['labels']:.1f}")
 mac("CtrlJ", f"{_on['J']:.2f}"); mac("CtrlNoConfJ", f"{_off['J']:.2f}")
 
+# post hoc label-budget diagnostic on the clean real streams (run_label_budget.py)
+_lb = json.load(open(HERE.parent.parent / "outputs/paper3/riskbudget/label_budget/clean.json"))
+assert len(_lb) == 14
+def _lbJ(key): return sum(v[key]["J"] for v in _lb.values()) / len(_lb)
+_f2, _fT, _p2 = _lbJ("f3_pi1_h50_B200"), _lbJ("f3_pi1_h50_Bfull"), _lbJ("f3v2d_h50_B200")
+assert _fT < _p2 < _f2  # as the text says
+mac("LabFull", f"{_f2:.2f}"); mac("LabFullAll", f"{_fT:.2f}"); mac("LabPaced", f"{_p2:.2f}")
+for st, w in (("spam", "Spam"), ("metro", "Metro")):
+    a, b = _lb[st]["f3_pi1_h50_B200"], _lb[st]["f3_pi1_h50_Bfull"]
+    assert a["exhausted"] == 1 and a["forced_before"] == 0 < a["forced_after"]
+    mac(f"Lab{w}", f"{a['J']:.1f}"); mac(f"Lab{w}All", f"{b['J']:.1f}")
+
 # Table: registered outcomes
 def verdict(b): return "supported" if b else "not supported"
 rows = []

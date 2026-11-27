@@ -17,6 +17,7 @@ outputs/paper3/riskbudget/*
 !outputs/paper3/riskbudget/screen100/
 !outputs/paper3/riskbudget/real_ablations/
 !outputs/paper3/riskbudget/noconf_control/
+!outputs/paper3/riskbudget/label_budget/
 *.aux
 *.log
 *.out
