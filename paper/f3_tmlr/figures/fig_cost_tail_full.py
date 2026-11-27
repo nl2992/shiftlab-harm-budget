@@ -12,7 +12,7 @@ desc = load_json(RES / "confirm_summary.json")["descriptive"]
 # arm -> (label, family, (dx, dy, ha)) ; family: sh shield, st stop-loss, abl ablation
 PANELS = {
     12: {"f3_pi1_R12": ("full", "sh", (-6, 5, "right")), "stoploss_R12": ("stop-loss", "st", (0, 13, "center")),
-         "f3_pi1_R12_nopending": ("no pending", "abl", (-6, 7, "right")), "f3_pi1_R12_norollback": ("no rollback", "abl", (6, 11, "left")),
+         "f3_pi1_R12_nopending": ("no pending", "abl", (-6, 7, "right")), "f3_pi1_R12_norollback": ("no rollback", "abl", (7, -4, "left")),
          "f3_pi25_R12_noconf": ("no width", "abl", (0, -10, "center"))},
     20: {"f3_pi1_R20": ("full", "sh", (6, 4, "left")), "f3v2d_R20": ("paced", "sh", (-6, 6, "right")),
          "f3v2_R20_blind8": ("blind-8", "sh", (-6, -6, "right")), "stoploss_R20": ("stop-loss", "st", (-7, -9, "right"))},
@@ -43,7 +43,7 @@ axes[0].set_ylabel("mean cost $J$ (per episode)")
 for ax in axes[1:]: ax.tick_params(axis="y", left=False); ax.spines["left"].set_visible(False)
 axes[0].annotate("never\nswitch", (0, desc["never"]["J"]), xytext=(6, 0), textcoords="offset points", fontsize=7.5, color=P["grey"], va="center", ha="left")
 handles = [Line2D([], [], marker="s", color=P["blue_main"], lw=0, ms=6, label="shield"),
-           Line2D([], [], marker="o", color=P["red_strong"], lw=0, ms=6, label="stop-loss"),
+           Line2D([], [], marker="o", mfc="white", mec=P["red_strong"], mew=1.4, lw=0, ms=6, label="stop-loss"),
            Line2D([], [], marker="^", color=P["violet"], lw=0, ms=6, label="ablation"),
            Line2D([], [], marker="o", mfc="none", mec=P["red_2"], lw=0, ms=6, label="other comparator"),
            Line2D([], [], marker="o", mfc="white", mec=P["dark"], lw=0, ms=6, label="open: $q_{99}>R$")]

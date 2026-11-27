@@ -760,6 +760,9 @@ def _sim(a, viol):
     return D["never"]["J"] - D[a]["J"], 100 * viol, D[a]["sup_max"]
 _raw = [json.load(open(f)) for f in sorted((_OUTR / "real/clean").glob("*.json"))]
 assert len(_raw) == 14
+def np_mean(d, a):
+    v = [x for row in d["fields"]["J"][d["arms"].index(a)] for x in row]
+    return sum(v) / len(v)
 def _real(a):  # from the run outputs, not the rounded markdown table
     gain, over, n, worst = 0.0, 0, 0, 0.0
     for d in _raw:
@@ -798,6 +801,11 @@ for i, w in ((1, "Sim"), (2, "TwentyFour"), (3, "Sixty")):
     mac(f"PricePaced{w}", f"{100 * sh_paced[i][0] / sl[i][0]:.0f}")
     mac(f"PriceStopOver{w}", f"{sl[i][1]:.1f}")
     mac(f"PriceStopMax{w}", f"{sl[i][2]:.0f}")
+for cond, w in (("dropout_adverse", "Dropout"), ("delay_adverse", "Delay")):
+    mac(f"PriceStopMax{w}", rowdict(pooled(cond), "stoploss_h14")["max sup-harm"])
+    for st in ("airlines", "bank"):  # the harmful streams: the full shield is cheaper than the stop-loss
+        d = json.load(open(_OUTR / f"real/{cond}/{st}.json"))
+        assert np_mean(d, "f3_pi1_h14") < np_mean(d, "stoploss_h14"), (cond, st)
 mac("PriceCalSim", num(price[1][1][0], 2)); mac("PriceCalReal", num(price[1][2][0], 1))
 # the sentences in main.tex rest on these
 assert all(sl[i][0] > max(sh_full[i][0], sh_paced[i][0]) and sl[i][1] > 0 for i in (1, 2, 3))

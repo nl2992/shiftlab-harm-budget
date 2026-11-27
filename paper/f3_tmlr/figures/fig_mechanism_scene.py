@@ -22,7 +22,7 @@ ov = fig.add_axes([0, 0, 1, 1], zorder=5)           # overlay in inch coordinate
 ov.set_xlim(0, W); ov.set_ylim(0, H); ov.axis("off"); ov.patch.set_alpha(0)
 CX, CY, CW, CH = 0.62, 0.5, 5.8, 2.52               # chart rectangle (inches)
 ax = fig.add_axes([CX / W, CY / H, CW / W, CH / H])
-X0, X1, Y0, Y1 = 0.5, 60.0, -13.0, 35.0
+X0, X1, Y0, Y1 = 0.5, 60.0, -15.0, 35.0
 ax.set_xlim(X0, X1); ax.set_ylim(Y0, Y1)
 px = lambda t: CX + (t - X0) / (X1 - X0) * CW        # data -> inches
 py = lambda y: CY + (y - Y0) / (Y1 - Y0) * CH
@@ -48,13 +48,13 @@ robot, envelope, shield, stop = icons
 ov.text(0.05, H - 0.2, "two controllers, one outcome sequence", family=MONO, fontsize=10, fontweight="bold", ha="left", va="center")
 
 # ---- challenger-better: a shallow strip along the bottom of the opening interval
-ov.add_patch(FancyBboxPatch((px(0.5), py(-13.0)), px(NPLUS + 0.5) - px(0.5), 0.2, boxstyle="square,pad=0", fc="#E8F0E5", ec="none", zorder=1))
-ov.text((px(0.5) + px(NPLUS + 0.5)) / 2, py(-13.0) + 0.1, "challenger better", ha="center", va="center", fontsize=6.6, color="#3F7F3B", fontweight="bold")
+ov.add_patch(FancyBboxPatch((px(0.5), py(Y0) + 0.05), px(NPLUS + 0.5) - px(0.5), 0.2, boxstyle="square,pad=0", fc="#E8F0E5", ec="none", zorder=1))
+ov.text((px(0.5) + px(NPLUS + 0.5)) / 2, py(Y0) + 0.15, "challenger better", ha="center", va="center", fontsize=6.6, color="#3F7F3B", fontweight="bold")
 
 # ---- the pending labels at the shield's stopping check, drawn: a white card with one envelope each, plus this round
 npend = int(res["shield"]["log"]["P"][ts - 1])      # round ts is the check that stops; nothing is added to P there
 cw, ch = 2.3, 0.62
-cx0, cy0 = px(ts) - cw - 0.35, py(Hs.max()) + 0.42
+cx0, cy0 = px(ts) - cw - 0.35, py(Hs.max()) + 0.34
 ov.add_patch(FancyBboxPatch((cx0, cy0), cw, ch, boxstyle="round,pad=0,rounding_size=0.07", fc="white", ec="#34383C", lw=0.8, zorder=6))
 rich(ov, cx0 + 0.12, cy0 + ch - 0.14, [(f"At round {ts}", dict(weight="bold"))], fs=6.8)
 for i in range(npend):

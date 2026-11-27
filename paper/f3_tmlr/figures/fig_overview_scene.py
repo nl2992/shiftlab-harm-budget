@@ -84,7 +84,7 @@ for lab, w, c in segs:
     mono(ov, x + w / 2, sy - 0.13, lab, fs=5.6, ha="center", va="center", linespacing=1.3)
     xs.append((x, w)); x += w
 frame(ov, xs[3][0] - 0.01, sy - 0.04, xs[3][1] + 0.02, sh + 0.08, color="#8B1E1E", lw=1.5, r=0.05, zorder=7)
-bx_ = x + 0.12
+bx_ = x - 0.06    # the bar runs past the budget: this is the check that leads to the rollback at round 11
 ov.plot([bx_, bx_], [sy - 0.3, sy + sh + 0.12], color=RED, lw=1.0, ls=(0, (3, 2)), zorder=7)
 rich(ov, bx_ - 0.02, sy + sh + 0.2, [("budget ", {"family": MONO}), ("R", dict(weight="bold", color=RED, style="italic"))], fs=6.3, ha="right")
 ov.add_patch(FancyBboxPatch((PX0 + 0.2, PY0 + 0.08), PW_ - 0.4, 0.22, boxstyle="round,pad=0,rounding_size=0.06", fc=CALLOUT["green"][0], ec="none", zorder=2))

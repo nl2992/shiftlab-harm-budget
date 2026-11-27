@@ -36,13 +36,12 @@ for ax, (src, title) in zip(axes, (("scarce", "Simulation (label-scarce family)"
     ax.text(0.71, 1.3, "$0.5\\leq x<1$", ha="center", va="center", fontsize=7.5, color=P["grey"])
     ax.set_xlabel("exposure ratio $x = rd/h$")
 axes[0].set_ylabel("share of Wald's gain given up, $L$")
-axes[1].text(1e-3*1.3, 1.03, "none kept", fontsize=7.5, va="bottom", color=P["dark"])
-axes[1].text(1e-3*1.3, 0.03, "all kept", fontsize=7.5, va="bottom", color=P["dark"])
+axes[0].text(0.017, 1.03, "none kept", fontsize=7.5, va="bottom", color=P["dark"])
+axes[0].text(0.017, 0.03, "all kept", fontsize=7.5, va="bottom", color=P["dark"])
 axes[1].tick_params(axis="y", left=False); axes[1].spines["left"].set_visible(False)
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 hs = [Line2D([], [], color=c, marker=m, mfc="white", mew=1.4, lw=1.6, ms=5, label=l) for l, c, m in ARM_STYLE.values()]
 hs.append(Patch(color=ARM_STYLE["f3v2d"][1], alpha=0.25, label="paced, interquartile range"))
-axes[1].legend(handles=hs, loc="center left", bbox_to_anchor=(0.0, 0.47), fontsize=7.2, handlelength=1.6, borderaxespad=0.3, labelspacing=0.3)
-axes[0].text(0.017, 1.03, "none kept", fontsize=7.5, va="bottom", color=P["dark"], alpha=0) 
+axes[1].legend(handles=hs, loc="upper left", bbox_to_anchor=(0.0, 0.76), fontsize=7.2, handlelength=1.6, borderaxespad=0.3, labelspacing=0.3)
 save(fig, "regime_map")

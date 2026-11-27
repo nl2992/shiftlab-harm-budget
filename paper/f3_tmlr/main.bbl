@@ -1,9 +1,17 @@
-\begin{thebibliography}{50}
+\begin{thebibliography}{52}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Alshiekh et~al.(2018)Alshiekh, Bloem, Ehlers, K{\"o}nighofer, Niekum,
+  and Topcu]{alshiekh2018shielding}
+Mohammed Alshiekh, Roderick Bloem, R{\"u}diger Ehlers, Bettina K{\"o}nighofer,
+  Scott Niekum, and Ufuk Topcu.
+\newblock Safe reinforcement learning via shielding.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, pp.\  2669--2678, 2018.
 
 \bibitem[Badanidiyuru et~al.(2013)Badanidiyuru, Kleinberg, and
   Slivkins]{badanidiyuru2013bandits}
@@ -64,6 +72,14 @@ Duo Cheng, Xingyu Zhou, and Bo~Ji.
 \newblock In \emph{Proceedings of the 40th International Conference on Machine
   Learning}, volume 202 of \emph{PMLR}, pp.\  5521--5543, 2023.
 
+\bibitem[C{\'o}rdoba et~al.(2023)C{\'o}rdoba, Palmisano, Fr{\"a}nzle, Bloem,
+  and K{\"o}nighofer]{cano2023delayed}
+Filip~Cano C{\'o}rdoba, Alexander Palmisano, Martin Fr{\"a}nzle, Roderick
+  Bloem, and Bettina K{\"o}nighofer.
+\newblock Safety shielding under delayed observation.
+\newblock In \emph{Proceedings of the International Conference on Automated
+  Planning and Scheduling}, 2023.
+
 \bibitem[Diemert et~al.(2017)Diemert, Meynet, Galland, and
   Lefortier]{diemert2017attribution}
 Eustache Diemert, Julien Meynet, Pierre Galland, and Damien Lefortier.
@@ -79,10 +95,11 @@ Vassilis Digalakis, Jr., Christophe P{\'e}rignon, S{\'e}bastien Saurin, and
   learning models?
 \newblock arXiv:2512.18390, 2025.
 
-\bibitem[Du et~al.(2020)Du, Wang, and Huang]{du2020conservative}
+\bibitem[Du et~al.(2021)Du, Wang, and Huang]{du2020conservative}
 Yihan Du, Siwei Wang, and Longbo Huang.
 \newblock A one-size-fits-all solution to conservative bandit problems.
-\newblock \emph{arXiv preprint arXiv:2012.07341}, 2020.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, pp.\  7254--7261, 2021.
 
 \bibitem[Elwell \& Polikar(2011)Elwell and Polikar]{elwell2011incremental}
 Ryan Elwell and Robi Polikar.
