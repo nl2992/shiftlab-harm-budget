@@ -51,16 +51,18 @@ ov.text(0.05, H - 0.2, "two controllers, one outcome sequence", family=MONO, fon
 ov.add_patch(FancyBboxPatch((px(0.5), py(-13.0)), px(NPLUS + 0.5) - px(0.5), 0.2, boxstyle="square,pad=0", fc="#E8F0E5", ec="none", zorder=1))
 ov.text((px(0.5) + px(NPLUS + 0.5)) / 2, py(-13.0) + 0.1, "challenger better", ha="center", va="center", fontsize=6.6, color="#3F7F3B", fontweight="bold")
 
-# ---- the five pending labels, drawn: a white card with five envelopes, leader to the shield's stopping round
+# ---- the pending labels at the shield's stopping check, drawn: a white card with one envelope each, plus this round
+npend = int(res["shield"]["log"]["P"][ts - 1])      # round ts is the check that stops; nothing is added to P there
 cw, ch = 2.3, 0.62
 cx0, cy0 = px(ts) - cw - 0.35, py(Hs.max()) + 0.42
 ov.add_patch(FancyBboxPatch((cx0, cy0), cw, ch, boxstyle="round,pad=0,rounding_size=0.07", fc="white", ec="#34383C", lw=0.8, zorder=6))
 rich(ov, cx0 + 0.12, cy0 + ch - 0.14, [(f"At round {ts}", dict(weight="bold"))], fs=6.8)
-for i in range(5):
+for i in range(npend):
     ex, ey = cx0 + 0.14 + i * 0.26, cy0 + 0.2
     ov.add_patch(FancyBboxPatch((ex, ey), 0.2, 0.14, boxstyle="round,pad=0,rounding_size=0.015", fc="white", ec="#34383C", lw=0.8, zorder=7))
     ov.plot([ex, ex + 0.1, ex + 0.2], [ey + 0.14, ey + 0.07, ey + 0.14], color="#34383C", lw=0.7, zorder=7)
-rich(ov, cx0 + 1.5, cy0 + 0.27, [("5 labels", dict(weight="bold", color="#A57B0B")), (" pending", {})], fs=6.4)
+rich(ov, cx0 + 1.24, cy0 + 0.3, [(f"{npend} labels", dict(weight="bold", color="#A57B0B")), (" pending,", {})], fs=6.4)
+rich(ov, cx0 + 1.24, cy0 + 0.15, [("plus this round", {})], fs=6.4)
 arrow(ov, (cx0 + cw, cy0 + 0.08), (px(ts) - 0.03, py(Hs.max()) + 0.07), color="#34383C", lw=0.8, ms=6)
 
 # ---- overshoot, measured on the plot: a bracket between the budget and the stop-loss plateau
