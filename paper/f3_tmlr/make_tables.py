@@ -125,6 +125,16 @@ for a, key in [("f3_pi1_R12_nopending", "NoPending"), ("f3_pi1_R12_norollback", 
     v = conf["C6"]["arms"][a]["worst_stats"]
     mac(f"Abl{key}", r3(v["rate"])); mac(f"AblLo{key}", r3(v["lo"])); mac(f"AblHi{key}", r3(v["hi"]))
 
+# post hoc matched control for the no-width ablation (run_noconf_control.py)
+_nc = json.load(open(HERE.parent.parent / "outputs/paper3/riskbudget/noconf_control/summary.json"))
+_off, _on = (_nc["arms"][f"f3_pi25_R12_{s}"] for s in ("noconf", "withconf"))
+assert _off["worst_viol"] == conf["C6"]["arms"]["f3_pi25_R12_noconf"]["worst_stats"]["k"]
+assert _on["total_viol"] == 0 and _on["J"] < _off["J"] and _on["labels"] > _off["labels"]  # as the text says
+mac("CtrlNoConfViol", thousands(_off["total_viol"])); mac("CtrlMax", f"{_on['sup_max']:.0f}")
+mac("CtrlLow", f"{100 * _on['low_rate_share']:.1f}"); mac("CtrlNoConfLow", f"{100 * _off['low_rate_share']:.1f}")
+mac("CtrlLabels", f"{_on['labels']:.1f}"); mac("CtrlNoConfLabels", f"{_off['labels']:.1f}")
+mac("CtrlJ", f"{_on['J']:.2f}"); mac("CtrlNoConfJ", f"{_off['J']:.2f}")
+
 # Table: registered outcomes
 def verdict(b): return "supported" if b else "not supported"
 rows = []
