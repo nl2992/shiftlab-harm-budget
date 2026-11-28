@@ -14,7 +14,7 @@ rows = ex["rows"]
 BINS = [(0.0, 0.5, "[0,0.5)"), (0.5, 1.0, "[0.5,1)"), (1.0, 2.0, "[1,2)"), (2.0, np.inf, "[2,inf)")]
 
 apply_style(8.5)
-fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 3.1), sharey=True, gridspec_kw=dict(wspace=0.06))
+fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 3.1), sharey=True, gridspec_kw=dict(wspace=0.14))
 meds = {}
 for ax, (src, title) in zip(axes, (("scarce", "Simulation (label-scarce family)"), ("real", "Real streams (clean feedback)"))):
     ax.axvspan(0.5, 1.0, color=P["neutral"], alpha=0.35, lw=0)

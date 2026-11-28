@@ -145,7 +145,7 @@ Steven~R. Howard, Aaditya Ramdas, Jon McAuliffe, and Jasjeet Sekhon.
 Ting Hu, Luanda Cai, and Emmanouil-Vasileios Vlatakis-Gkaragkounis.
 \newblock Prudent-banker: No extra fees for baseline safety in adversarial
   bandits with and without delays.
-\newblock arXiv:2605.23351, 2026.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2026.
 
 \bibitem[Johari et~al.(2017)Johari, Koomen, Pekelis, and
   Walsh]{johari2017peeking}

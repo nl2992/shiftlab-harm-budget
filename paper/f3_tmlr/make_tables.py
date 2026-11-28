@@ -29,6 +29,22 @@ def tex(s):
         s = s.replace(a, b)
     return s
 
+def arm(a):
+    """Display name of an arm id, so that no table prints a code name."""
+    fixed = {"never": "Never switch", "wald_cut": "Wald+cutoff", "cusum": "CUSUM", "gate_wald": "E-process gate",
+             "f3v2_R20_blind8": "Shield blind-8, $R=20$", "f3v2_blind8_h14": "Shield blind-8, $h=14$",
+             "f3_pi1_R12_nopending": "Shield full, no pending reserve, $R=12$",
+             "f3_pi1_R12_norollback": "Shield full, no rollback reserve, $R=12$",
+             "f3_pi25_R12_noconf": "Shield, no width, $R=12$"}
+    if a in fixed:
+        return fixed[a]
+    m = re.fullmatch(r"(cusum_rb_h|stoploss_|f3_pi1_|f3v2d_|v3_)([Rh]?)(\d+)", a)
+    stem, unit, v = m.groups()  # an unknown arm id fails here
+    if stem == "cusum_rb_h":
+        return f"CUSUM rollback, $\\theta={v}$"
+    name = {"stoploss_": "Stop-loss", "f3_pi1_": "Shield full", "f3v2d_": "Shield paced", "v3_": "Shield v3"}[stem]
+    return f"{name}, ${unit}={v}$"
+
 def sg(x, d=2):
     """signed number with a proper minus sign"""
     s = f"{x:+.{d}f}"
@@ -205,7 +221,7 @@ names = list(D.keys())
 body = "\\begin{tabular}{@{}l r r r r r r@{}}\n\\toprule\nArm & $J$ & labels & $q_{95}$ & $q_{99}$ & max & deployed frac. \\\\\n\\midrule\n"
 for a in names:
     d = D[a]
-    body += f"{tex(a)} & {num(d['J'])} & {d['labels']:.1f} & {d['sup_q95']:.0f} & {d['sup_q99']:.0f} & {d['sup_max']:.0f} & {d['deployed']:.3f} \\\\\n"
+    body += f"{arm(a)} & {num(d['J'])} & {d['labels']:.1f} & {d['sup_q95']:.0f} & {d['sup_q99']:.0f} & {d['sup_max']:.0f} & {d['deployed']:.3f} \\\\\n"
 body += "\\bottomrule\n\\end{tabular}\n"
 write("app_desc.tex", body)
 
@@ -230,9 +246,9 @@ body = "\\begin{tabular}{@{}l r r@{}}\n\\toprule\nArm & 6 stress regimes & 24 or
 for a, key in [("wald_cut", "Wald"), ("cusum", "Cusum"), ("gate_wald", "Gate"), ("cusum_rb_h8", "CusumRb"), ("stoploss_R20", "Stop")]:
     sv, ov = pool(a, STRESS, conf["C3"]["arms"]), pool(a, ORIG, conf["C3"]["arms"])
     mac(f"StressExceed{key}", f"{100*sv:.0f}"); mac(f"OrigExceed{key}", f"{100*ov:.0f}")
-    body += f"{tex(a)} & {r3(sv)} & {r3(ov)} \\\\\n"
+    body += f"{arm(a)} & {r3(sv)} & {r3(ov)} \\\\\n"
 for a, src in [("f3_pi1_R20", conf["C1"]["arms"]), ("f3v2d_R20", conf["C2"]["arms"])]:
-    body += f"{tex(a)} & {r3(pool(a, STRESS, src))} & {r3(pool(a, ORIG, src))} \\\\\n"
+    body += f"{arm(a)} & {r3(pool(a, STRESS, src))} & {r3(pool(a, ORIG, src))} \\\\\n"
 _so = [(pool(a, STRESS, conf["C3"]["arms"]), pool(a, ORIG, conf["C3"]["arms"])) for a in ("wald_cut", "cusum", "gate_wald", "cusum_rb_h8", "stoploss_R20")]
 mac("StressExceedMin", f"{100*min(x for x, _ in _so):.0f}"); mac("StressExceedMax", f"{100*max(x for x, _ in _so):.0f}")
 mac("OrigExceedMin", f"{100*min(y for _, y in _so):.0f}"); mac("OrigExceedMax", f"{100*max(y for _, y in _so):.0f}")
@@ -371,7 +387,7 @@ body = "\\begin{tabular}{@{}l l " + "r " * 5 + "@{}}\n\\toprule\n & & \\multicol
 for cond, n in CONDS:
     t = pooled(cond, "harmful2")
     for ref, col in [("wald_cut", "dJ vs wald_cut"), ("never", "dJ vs never")]:
-        body += f"{n if ref=='wald_cut' else ''} & {tex(ref)} & " + " & ".join(sg(float(rowdict(t, f'f3_pi1_h{h}')[col]), 1) for h in (6, 14, 24, 50, 100)) + " \\\\\n"
+        body += f"{n if ref=='wald_cut' else ''} & {arm(ref)} & " + " & ".join(sg(float(rowdict(t, f'f3_pi1_h{h}')[col]), 1) for h in (6, 14, 24, 50, 100)) + " \\\\\n"
 body += "\\bottomrule\n\\end{tabular}\n"
 write("tab_harmful.tex", body)
 
@@ -382,7 +398,7 @@ def full_real(cond, grp):
     for r in rows:
         d = dict(zip(hdr, r))
         ex = d["violations (own R) or exceed"]
-        body += (f"{tex(r[0])} & {d['J']} & {sg(float(d['dJ vs wald_cut']),1)} & {sg(float(d['dJ vs never']),1)} & {d['max sup-harm']} & "
+        body += (f"{arm(r[0])} & {d['J']} & {sg(float(d['dJ vs wald_cut']),1)} & {sg(float(d['dJ vs never']),1)} & {d['max sup-harm']} & "
                  f"{tex(ex.replace(' ', ', '))} & {d['labels']} & {d['deployed']} & {d['forced rb']} \\\\\n")
     body += "\\bottomrule\n\\end{tabular}\n"
     return body
@@ -424,6 +440,20 @@ for k, lab in SRC:
     body += f"{lab} & {ols[k]['b_logx']:.2f} & {sg(ols[k]['b_log_labels'])} \\\\\n"
 body += "\\bottomrule\n\\end{tabular}\n"
 write("app_ols.tex", body)
+
+# post hoc: x against its parts as a predictor of L, same units as the registered tests
+from scipy.stats import spearmanr
+_rows = json.load(open(RES / "exposure_ratio_test.json"))["rows"]
+body = "\\begin{tabular}{@{}l r r r@{}}\n\\toprule\nArm & $x=rd/h$ & $d/h$ & $1/h$ \\\\\n\\midrule\n"
+for k, lab in SRC:
+    src, a = k.split("/")
+    u = [q for q in _rows if q["source"] == src and q["arm"] == a]
+    L = [q["L"] for q in u]
+    sx, sd, sh = (spearmanr(v, L).statistic for v in ([q["x"] for q in u], [q["d"] / q["h"] for q in u], [1 / q["h"] for q in u]))
+    assert abs(sx - expo["tests"][k]["spearman"]) < 1e-9, k  # same units as the registered test
+    assert sx > max(sd, sh), k  # the sentence in main.tex
+    body += f"{lab} & {sx:.2f} & {sd:.2f} & {sh:.2f} \\\\\n"
+write("app_predictors.tex", body + "\\bottomrule\n\\end{tabular}\n")
 
 # ---------------------------------------------------------------- propositions check
 p3 = props["prop3"]
@@ -468,7 +498,7 @@ t = sc[("", "Pooled")]
 body = "\\begin{tabular}{@{}l r l l l@{}}\n\\toprule\nArm & $J$ & $\\Delta J$ vs Wald & $\\Delta J$ vs never & violations \\\\\n\\midrule\n"
 for r in t[1]:
     if r[0] in ("never", "wald_cut", "stoploss_h50", "f3_pi1_h50", "f3v2d_h50", "f3_pi1_h100", "f3v2d_h100", "v3_h50", "v3_h100"):
-        d = dict(zip(t[0], r)); body += tex(r[0]) + " & " + d["J"] + " & " + tex(d["dJ vs wald_cut"]) + " & " + tex(d["dJ vs never"]) + " & " + tex(d[cols[3]].split(" (")[0]) + " \\\\\n"
+        d = dict(zip(t[0], r)); body += arm(r[0]) + " & " + d["J"] + " & " + tex(d["dJ vs wald_cut"]) + " & " + tex(d["dJ vs never"]) + " & " + tex(d[cols[3]].split(" (")[0]) + " \\\\\n"
 body += "\\bottomrule\n\\end{tabular}\n"
 write("app_v3_scarce.tex", body)
 t = og[("", "Pooled")]
@@ -476,14 +506,14 @@ body = "\\begin{tabular}{@{}l r l l l@{}}\n\\toprule\nArm & $J$ & $\\Delta J$ vs
 for r in t[1]:
     if r[0] != "never":
         d = dict(zip(t[0], r)); vv = d["violation (own R) / exceedance rate of R12/20/30"]
-        body += tex(r[0]) + " & " + d["J"] + " & " + tex(d["dJ vs wald_cut"]) + " & " + tex(d["dJ vs never"]) + " & " + tex(vv.split(" (")[0]) + " \\\\\n"
+        body += arm(r[0]) + " & " + d["J"] + " & " + tex(d["dJ vs wald_cut"]) + " & " + tex(d["dJ vs never"]) + " & " + tex(vv.split(" (")[0]) + " \\\\\n"
 body += "\\bottomrule\n\\end{tabular}\n"
 write("app_v3_orig30.tex", body)
 t = rv[("clean", "clean / all14: pooled (equal weight over streams)")]
 body = "\\begin{tabular}{@{}l r r r r@{}}\n\\toprule\nArm & $J$ & $\\Delta J$ vs Wald & $\\Delta J$ vs never & viol. \\\\\n\\midrule\n"
 for r in t[1]:
     if r[0] in ("f3_pi1_h50", "f3v2d_h50", "v3_h50", "f3_pi1_h100", "f3v2d_h100", "v3_h100"):
-        d = dict(zip(t[0], r)); body += tex(r[0]) + " & " + d["J"] + " & " + sg(float(d["dJ vs wald_cut"]), 1) + " & " + sg(float(d["dJ vs never"]), 1) + " & " + tex(d["violations (own R) / exceed"]) + " \\\\\n"
+        d = dict(zip(t[0], r)); body += arm(r[0]) + " & " + d["J"] + " & " + sg(float(d["dJ vs wald_cut"]), 1) + " & " + sg(float(d["dJ vs never"]), 1) + " & " + tex(d["violations (own R) / exceed"]) + " \\\\\n"
 body += "\\bottomrule\n\\end{tabular}\n"
 write("app_v3_real.tex", body)
 cand = sel["candidates"]
@@ -627,18 +657,18 @@ wc = arm_by["wald_cut"]["policy"]["params"]; cu = arm_by["cusum"]["policy"]["par
 for n_ in ("cusum_rb_h4", "cusum_rb_h8", "stoploss_R12", "stoploss_R20", "stoploss_R30"):
     assert arm_by[n_]["inner"]["params"] == wc
 body = "\\begin{tabular}{@{}>{\\raggedright\\arraybackslash}p{2.3cm}>{\\raggedright\\arraybackslash}p{3.2cm}>{\\raggedright\\arraybackslash}p{5.6cm}>{\\raggedright\\arraybackslash}p{4.0cm}@{}}\n\\toprule\nname & label & tuned or fixed parameters (frozen) & tuning space (32 random draws)\\\\\n\\midrule\n"
-body += f"never & in-house reference & none & none \\\\\n"
-body += f"wald\\_cut & documented adapter & $\\lambda={g3(wc['lam'])}$, $\\gamma={g3(wc['gamma'])}$, paced acquisition, cutoff {wc['stop']:g}$T$ & $\\lambda\\in[.9,.999]$, $\\gamma\\in[.05,.5]$, cutoff $\\in\\{{.05,.1,.15,.2,.3\\}}T$ \\\\\n"
-body += f"cusum & in-house heuristic & $\\delta={g3(cu['delta'])}$, $h={g3(cu['h'])}$, paced acquisition, cutoff {cu['stop']:g}$T$ & $\\delta\\in[.02,.4]$, $h\\in[1,12]$ (log-uniform), cutoff $\\in\\{{\\text{{none}},.05,\\dots,.3\\}}T$ \\\\\n"
-body += f"gate\\_wald & in-house heuristic & Wald part $\\lambda={g3(gw['lam'])}$, $\\gamma={g3(gw['gamma'])}$, cutoff {gw['stop']:g}$T$; gate $\\alpha={gw['alpha']:g}$, $\\lambda_g={gw['lam_g']:g}$ & Wald space, $\\alpha\\in\\{{.05,.1,.2\\}}$, $\\lambda_g\\in\\{{.1,.25,.5\\}}$ \\\\\n"
-body += f"cusum\\_rb\\_h4, \\_h8 & in-house heuristic & inner: wald\\_cut above; rollback threshold $h\\in\\{{{arm_by['cusum_rb_h4']['h']:g},{arm_by['cusum_rb_h8']['h']:g}\\}}$, drift $0.1$ & threshold fixed by arm, not tuned \\\\\n"
-body += f"stoploss\\_R12, \\_R20, \\_R30 & in-house heuristic & inner: wald\\_cut above; budget $R\\in\\{{{arm_by['stoploss_R12']['R']},{arm_by['stoploss_R20']['R']},{arm_by['stoploss_R30']['R']}\\}}$ & $R$ set by the user, not tuned \\\\\n"
+body += f"Never switch & in-house reference & none & none \\\\\n"
+body += f"Wald+cutoff & documented adapter & $\\lambda={g3(wc['lam'])}$, $\\gamma={g3(wc['gamma'])}$, paced acquisition, cutoff {wc['stop']:g}$T$ & $\\lambda\\in[.9,.999]$, $\\gamma\\in[.05,.5]$, cutoff $\\in\\{{.05,.1,.15,.2,.3\\}}T$ \\\\\n"
+body += f"CUSUM & in-house heuristic & $\\delta={g3(cu['delta'])}$, $h={g3(cu['h'])}$, paced acquisition, cutoff {cu['stop']:g}$T$ & $\\delta\\in[.02,.4]$, $h\\in[1,12]$ (log-uniform), cutoff $\\in\\{{\\text{{none}},.05,\\dots,.3\\}}T$ \\\\\n"
+body += f"E-process gate & in-house heuristic & Wald part $\\lambda={g3(gw['lam'])}$, $\\gamma={g3(gw['gamma'])}$, cutoff {gw['stop']:g}$T$; gate $\\alpha={gw['alpha']:g}$, $\\lambda_g={gw['lam_g']:g}$ & Wald space, $\\alpha\\in\\{{.05,.1,.2\\}}$, $\\lambda_g\\in\\{{.1,.25,.5\\}}$ \\\\\n"
+body += f"CUSUM rollback & in-house heuristic & inner: Wald+cutoff above; rollback threshold $h\\in\\{{{arm_by['cusum_rb_h4']['h']:g},{arm_by['cusum_rb_h8']['h']:g}\\}}$, drift $0.1$ & threshold fixed by arm, not tuned \\\\\n"
+body += f"Stop-loss & in-house heuristic & inner: Wald+cutoff above; budget $R\\in\\{{{arm_by['stoploss_R12']['R']},{arm_by['stoploss_R20']['R']},{arm_by['stoploss_R30']['R']}\\}}$ & $R$ set by the user, not tuned \\\\\n"
 body += "\\bottomrule\n\\end{tabular}\n"
 write("app_comparators.tex", body)
 
 def shield_row(name, label, extra):
     a = arm_by[name]; sh = a["shield"]; ip = a["inner"]["params"]
-    return (f"{tex(name)} & {label} & $\\lambda={g3(ip['lam'])}$, $\\gamma={g3(ip['gamma'])}$, cutoff {ip['stop']:g}$T$ & {extra} \\\\")
+    return (f"{arm(name).rsplit(', $', 1)[0]} & {label} & $\\lambda={g3(ip['lam'])}$, $\\gamma={g3(ip['gamma'])}$, cutoff {ip['stop']:g}$T$ & {extra} \\\\")
 def shp(sh, keys):
     return ", ".join(f"{k_}$={sh[k_]}$" if not isinstance(sh[k_], (int, float)) or isinstance(sh[k_], bool) else f"{k_}$={sh[k_]:g}$" for k_ in keys if k_ in sh)
 sh1 = arm_by["f3_pi1_R20"]["shield"]; sh2 = arm_by["f3v2d_R20"]["shield"]; sh3 = arm_by["f3v2_R20_blind8"]["shield"]
@@ -647,7 +677,7 @@ body = "\\begin{tabular}{@{}>{\\raggedright\\arraybackslash}p{3.0cm}>{\\raggedri
 body += shield_row("f3_pi1_R20", "full sampling", f"$\\pi=1$ on every exposed round, $\\delta={sh1['delta']:g}$, label reserve {sh1['label_reserve_frac']:g}$B$; $R\\in\\{{12,20,30\\}}$")
 body += "\n" + shield_row("f3v2d_R20", "paced, settlement", f"$\\pi_{{\\min}}={sh2['pi_min']:g}$, $\\delta={sh2['delta']:g}$, label reserve {sh2['label_reserve_frac']:g}$B$, settlement window = declared delay (else {sh2['default_window']}); $R\\in\\{{20,30\\}}$")
 body += "\n" + shield_row("f3v2_R20_blind8", "blind-round", f"$\\pi_{{\\min}}={sh3['pi_min']:g}$ (so $\\pi\\in\\{{1,\\text{{blind}}\\}}$), blind margin {sh3['blind_margin']:g}, label reserve {sh3['label_reserve_frac']:.3f}$B$, window {sh3['default_window']}; $R=20$")
-body += f"\nv3 (frozen in \\texttt{{f3\\_v3\\_frozen.json}}) & label-scarce & wald\\_cut as above & $\\pi_{{\\min}}={v3f['pi_min']:g}$, label reserve {v3f['label_reserve_frac']:g}$B$, no blind rounds, mixture grid up to total variance {int(max(v3f['v_targets']))}, $\\delta={v3f['delta']:g}$ \\\\\n"
+body += f"\nShield v3 (frozen in \\texttt{{f3\\_v3\\_frozen.json}}) & label-scarce & Wald+cutoff as above & $\\pi_{{\\min}}={v3f['pi_min']:g}$, label reserve {v3f['label_reserve_frac']:g}$B$, no blind rounds, mixture grid up to total variance {int(max(v3f['v_targets']))}, $\\delta={v3f['delta']:g}$ \\\\\n"
 body += "\\bottomrule\n\\end{tabular}\n"
 write("app_shield_arms.tex", body)
 

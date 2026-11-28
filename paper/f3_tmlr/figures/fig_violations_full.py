@@ -17,7 +17,8 @@ im = ax.pcolormesh(np.arange(M.shape[1] + 1) - 0.5, np.arange(M.shape[0] + 1) - 
 ax.set_xlim(-0.5, M.shape[1] - 0.5); ax.set_ylim(M.shape[0] - 0.5, -0.5)
 ax.set_xticks(range(len(cols))); ax.set_xticklabels([c[2] for c in cols], fontsize=7)
 ax.xaxis.tick_top(); ax.tick_params(axis="x", length=0)
-lab = lambda g: g.replace("_", " ")
+RENAME = {"expensive_switch": "high switch fee", "dropout_adverse": "adverse dropout"}  # names used in the text
+lab = lambda g: RENAME.get(g, g.replace("_", " "))
 ax.set_yticks(range(len(order))); ax.set_yticklabels([("* " if g in stress else "") + lab(g) for g in order], fontsize=6.8)
 for t, g in zip(ax.get_yticklabels(), order):
     if g in stress: t.set_color(P["red_strong"]); t.set_fontweight("bold")
@@ -37,16 +38,16 @@ panel_label(ax, "(a)", -0.55, 1.08)
 ax.text(0.5, -0.045, "", transform=ax.transAxes)
 
 # (b)
-x = np.arange(len(conds)); w = 0.16
+x = np.arange(len(conds)); w = 0.115
 for i, (a, lbl, col, mk) in enumerate(rarms):
-    xs = x + (i - 2) * w
+    xs = x + (i - 3) * w
     bx.vlines(xs, 0, cnt[a], color=col, lw=1.2)
     bx.scatter(xs, cnt[a], color=col, marker=mk, s=26, zorder=3, label=lbl)
     for xi, v in zip(xs, cnt[a]):
         if not v: bx.text(xi, 55, "0", ha="center", va="bottom", fontsize=7.5, color=col)
 bx.set_xticks(x); bx.set_xticklabels(["clean", "adverse\ndropout", "adverse\ndelay"])
 bx.set_ylabel(f"runs with harm above $R$=24 (of {tot[0]:,})")
-bx.set_ylim(0, 1300); bx.set_yticks(range(0, 1201, 200)); bx.set_xlim(-0.55, 2.55)
+bx.set_ylim(0, 1500); bx.set_yticks(range(0, 1201, 200)); bx.set_xlim(-0.55, 2.55)
 bx.legend(loc="upper left", ncol=2, fontsize=7, bbox_to_anchor=(-0.02, 1.0), columnspacing=0.8, handletextpad=0.2, borderaxespad=0)
 panel_label(bx, "(b)", -0.28, 1.06)
 bx.set_title("Real streams ($R$=24)", loc="center", fontsize=8, y=1.0, pad=6)

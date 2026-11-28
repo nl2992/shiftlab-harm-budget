@@ -12,7 +12,7 @@ from viol_data import M, cols, order, stress, cnt, tot, rarms
 
 NAMES = {"wald_cut": "Wald cutoff", "cusum": "CUSUM", "gate_wald": "e-process gate", "cusum_rb_h8": "CUSUM rollback",
          "stoploss_R20": "stop-loss", "f3_pi1_R20": "shield (full)", "f3v2d_R20": "shield (paced)"}
-COLOR = {"wald_cut": P["red_strong"], "cusum": "#D98880", "gate_wald": "#C97B76", "cusum_rb_h8": "#D98880",
+COLOR = {"wald_cut": P["red_strong"], "cusum": "#7A2E2D", "gate_wald": "#8C6D46", "cusum_rb_h8": "#D98880",
          "stoploss_R20": "#E08E45", "f3_pi1_R20": P["blue_main"], "f3v2d_R20": P["teal"]}
 keys = [c[0] for c in cols]
 is_stress = np.array([g in stress for g in order])
@@ -50,18 +50,18 @@ ax.set_title("registered simulation", loc="left", fontsize=8, pad=6, family=["Co
 
 # (b) real streams, share of runs
 conds = ["clean", "adverse\ndropout", "adverse\ndelay"]
-show = ["wald_cut", "cusum_rb_h8", "stoploss_h14", "f3_pi1_h14"]
+show = ["wald_cut", "cusum", "gate_wald", "cusum_rb_h8", "stoploss_h14", "f3_pi1_h14"]
 lab = {a: (l, c, m) for a, l, c, m in rarms}
-x = np.arange(3); w = 0.19
+x = np.arange(3); w = 0.135
 for i, a in enumerate(show):
     pct = 100 * np.array(cnt[a]) / np.array(tot)
-    xs = x + (i - 1.5) * w
+    xs = x + (i - 2.5) * w
     bx.bar(xs, pct, width=w * 0.92, color=lab[a][1], label=lab[a][0].replace("shield (full)", "shield"))
     if a.startswith("f3"):
         for xi, v in zip(xs, pct):
             bx.text(xi, v + 0.8, "0", ha="center", va="bottom", fontsize=7.5, color=lab[a][1])
 bx.set_xticks(x); bx.set_xticklabels(conds)
-bx.set_ylabel("runs above $R$=24 (%)"); bx.set_ylim(0, 34)
+bx.set_ylabel("runs above $R$=24 (%)"); bx.set_ylim(0, 38)
 bx.legend(loc="upper left", ncol=2, fontsize=7, columnspacing=0.8, handlelength=0.9, handletextpad=0.4, borderaxespad=0, bbox_to_anchor=(0.0, 1.02))
 panel_label(bx, "b", -0.3, 1.1)
 bx.set_title("real streams", loc="left", fontsize=8, pad=6, family=["Courier New","Menlo","DejaVu Sans Mono"], fontweight="bold")

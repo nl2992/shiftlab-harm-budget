@@ -45,7 +45,6 @@ icons = cut_sheet(HERE / "assets_raw" / "icons2_sheet.png", rows=1, cols=4)
 robot, envelope, shield, stop = icons
 
 # ---- title (bold monospace, as in the references)
-ov.text(0.05, H - 0.2, "two controllers, one outcome sequence", family=MONO, fontsize=10, fontweight="bold", ha="left", va="center")
 
 # ---- challenger-better: a shallow strip along the bottom of the opening interval
 ov.add_patch(FancyBboxPatch((px(0.5), py(Y0) + 0.05), px(NPLUS + 0.5) - px(0.5), 0.2, boxstyle="square,pad=0", fc="#E8F0E5", ec="none", zorder=1))

@@ -80,8 +80,8 @@ fx = lambda c: mx(OX[1], lx0 + (lx1 - lx0) * c / Rv)
 hh = 0.1 * S
 ov.add_patch(FancyBboxPatch((fx(0), my(ly) - hh), fx(Rv - 2 * kv) - fx(0), 2 * hh, boxstyle="round,pad=0,rounding_size=0.0", fc="#E3F1E1", ec=OUTLINE, lw=0.7))
 ov.add_patch(FancyBboxPatch((fx(Rv - 2 * kv), my(ly) - hh), fx(Rv) - fx(Rv - 2 * kv), 2 * hh, boxstyle="round,pad=0,rounding_size=0.0", fc="#F6D5D2", ec=OUTLINE, lw=0.7))
-ov.text((fx(0) + fx(Rv - 2 * kv)) / 2, my(ly), "possible", fontsize=6.4, ha="center", va="center", color="#3F7F3B", fontweight="bold")
-ov.text((fx(Rv - 2 * kv) + fx(Rv)) / 2, my(ly), "none", fontsize=6.4, ha="center", va="center", color=RED, fontweight="bold")
+ov.text((fx(0) + fx(Rv - 2 * kv)) / 2, my(ly), "can promote", fontsize=6.4, ha="center", va="center", color="#3F7F3B", fontweight="bold")
+ov.text((fx(Rv - 2 * kv) + fx(Rv)) / 2, my(ly), "blocked", fontsize=6.4, ha="center", va="center", color=RED, fontweight="bold")
 for c, lab in ((0, "0"), (Rv - 2 * kv, "R$-$2k"), (Rv, "R")):
     ov.plot([fx(c)] * 2, [my(ly) - hh, my(ly) - hh - 0.05], color=OUTLINE, lw=0.7)
     ov.text(fx(c), my(ly) - hh - 0.13, lab, fontsize=6.6, ha="center", va="center")

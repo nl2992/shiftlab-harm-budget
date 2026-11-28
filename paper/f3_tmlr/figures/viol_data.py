@@ -24,7 +24,8 @@ M = np.array([[src[a]["per_regime"][g]["rate"] for a, src, _ in cols] for g in o
 
 # real streams: runs with sup_harm above R=24 (budget arms: above own R = 24 at h=14)
 conds = ["clean", "dropout_adverse", "delay_adverse"]
-rarms = [("wald_cut", "Wald cutoff", P["red_strong"], "o"), ("cusum_rb_h8", "CUSUM rollback", "#D98880", "D"),
+rarms = [("wald_cut", "Wald cutoff", P["red_strong"], "o"), ("cusum", "CUSUM", "#7A2E2D", "P"),
+         ("gate_wald", "e-process gate", "#8C6D46", "X"), ("cusum_rb_h8", "CUSUM rollback", "#D98880", "D"),
          ("stoploss_h14", "stop-loss", "#E08E45", "v"), ("f3_pi1_h14", "shield (full)", P["blue_main"], "s"),
          ("f3v2d_h14", "shield (paced)", P["teal"], "^")]
 cnt = {a: [] for a, *_ in rarms}; tot = []
